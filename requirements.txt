@@ -42,7 +42,6 @@ joblib==1.5.3
 markdown-it-py==4.0.0
 MarkupSafe==3.0.3
 mdurl==0.1.2
-metatrader5==5.0.5735
 mmh3==5.2.1
 mpmath==1.3.0
 msgpack==1.1.2
