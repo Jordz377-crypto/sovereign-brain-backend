@@ -117,25 +117,6 @@ Triggers a high-priority alert to the founders' WhatsApp channel.
 }
 ```
 
-### POST /v1/trading/bridge — Trading Dashboard Update
-
-Receives live MT5 trade data for the Venture Lab dashboard.
-
-```json
-{
-  "symbol": "EURUSD",
-  "position_size": 0.1,
-  "entry_price": 1.1050,
-  "current_price": 1.1080,
-  "profit_loss": 30.0,
-  "profit_loss_pct": 0.27
-}
-```
-
-### POST /mt5/webhook — Raw MT5 Webhook
-
-Accepts structured trade data from MetaTrader 5 Expert Advisors.
-
 ### GET /v1/system/health — Health Check
 
 Returns API uptime, Groq availability, and Supabase connection status.
@@ -183,24 +164,6 @@ CREATE TABLE trading_performance (
   comment TEXT
 );
 
--- MT5 trades table
-CREATE TABLE mt5_trades (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  symbol TEXT NOT NULL,
-  magic_number INT DEFAULT 0,
-  order_type TEXT NOT NULL,
-  volume NUMERIC,
-  price NUMERIC,
-  stop_loss NUMERIC DEFAULT 0,
-  take_profit NUMERIC DEFAULT 0,
-  profit NUMERIC DEFAULT 0,
-  balance NUMERIC DEFAULT 0,
-  equity NUMERIC DEFAULT 0,
-  comment TEXT DEFAULT '',
-  timestamp TEXT
-);
-
 -- Enable pgvector
 CREATE EXTENSION IF NOT EXISTS vector;
 
@@ -245,16 +208,6 @@ Three pre-built workflows are in `n8n-workflows/`:
 3. **human-handoff.json** — Alerts founders via dedicated WhatsApp channel when a client requests live interaction
 
 Import these into your n8n instance via the UI (Workflows → Import from File).
-
-## MT5 Trading Bridge
-
-The `trading_bridge.py` module can run as part of the main API or standalone. Configure your MT4/MT5 Expert Advisor to POST trade updates to:
-
-```
-http://your-server:8000/mt5/webhook
-```
-
-The bridge stores all trades in Supabase and powers the "Venture Lab" Live Performance dashboard on the website.
 
 ## Security Headers
 

@@ -19,7 +19,8 @@ class Settings(BaseSettings):
     cors_origins: str = (
         "http://localhost:5173,"
         "http://localhost:3000,"
-        "https://*.lovable.app"
+        "https://*.lovable.app,"
+        "https://sovereign-ai-hub-flbi.vercel.app"
     )
 
     za_founder_1_name: str = "Jordan"

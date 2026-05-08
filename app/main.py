@@ -6,7 +6,6 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
 from app.api.v1.endpoints import router as v1_router
-from trading_bridge import mt5_router
 
 logging.basicConfig(
     level=logging.INFO,
@@ -60,7 +59,6 @@ async def aigos_security_headers(request: Request, call_next):
 
 
 app.include_router(v1_router)
-app.include_router(mt5_router)
 
 
 @app.get("/")
