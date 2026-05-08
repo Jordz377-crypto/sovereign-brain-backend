@@ -1,0 +1,40 @@
+{
+  "name": "Email Confirmation - Next Steps",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "email-confirmation",
+        "responseMode": "onReceived",
+        "options": {
+          "rawBody": true
+        }
+      },
+      "id": "webhook-trigger",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "fromEmail": "team@ai-automationsystems.co.za",
+        "toEmail": "={{$json[\"body\"][\"email\"]}}",
+        "subject": "=Welcome to AI Automation Systems - Next Steps, {{$json[\"body\"][\"name\"]}}",
+        "text": "=Hi {{$json[\"body\"][\"name\"]}},\\n\\nThank you for reaching out to AI Automation Systems (PTY) LTD.\\n\\nWe have received your AI Audit request and our team will be reviewing your requirements shortly.\\n\\n*Next Steps:*\\n1. Our team will analyse your workflow within 24 hours\\n2. We will schedule a discovery call to discuss your specific needs\\n3. You will receive a custom proposal with ROI projections\\n\\nIn the meantime, feel free to explore our services at https://ai-automationsystems.co.za\\n\\nBest regards,\\nThe AIGOS Team\\nAI Automation Systems (PTY) LTD"
+      },
+      "id": "send-email",
+      "name": "Send Confirmation Email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 1,
+      "position": [500, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [{ "node": "Send Confirmation Email", "type": "main", "index": 0 }]
+      ]
+    }
+  }
+}

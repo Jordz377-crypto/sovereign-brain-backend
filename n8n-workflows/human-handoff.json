@@ -1,0 +1,53 @@
+{
+  "name": "Human Handoff Alert",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "human-handoff",
+        "responseMode": "onReceived",
+        "options": {
+          "rawBody": true
+        }
+      },
+      "id": "webhook-trigger",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{$env.EVOLUTION_API_URL}}/message/sendText/{{$env.EVOLUTION_INSTANCE}}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "27704592553"
+            },
+            {
+              "name": "text",
+              "value": "=*Human Handoff Requested*\\n\\nA client is waiting for a live interaction.\\n\\nTranscript excerpt:\\n{{$json[\"body\"][\"transcript\"][0][\"content\"]}}\\n\\nContact: {{$json[\"body\"][\"contact_info\"][\"name\"]}} | {{$json[\"body\"][\"contact_info\"][\"email\"]}} | {{$json[\"body\"][\"contact_info\"][\"phone\"]}}"
+            }
+          ]
+        }
+      },
+      "id": "whatsapp-founders",
+      "name": "WhatsApp - Founders Channel",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [500, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [{ "node": "WhatsApp - Founders Channel", "type": "main", "index": 0 }]
+      ]
+    }
+  }
+}

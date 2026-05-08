@@ -1,0 +1,82 @@
+{
+  "name": "Instant Lead Alert",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "lead-alert",
+        "responseMode": "onReceived",
+        "options": {
+          "rawBody": true
+        }
+      },
+      "id": "webhook-trigger",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{$env.EVOLUTION_API_URL}}/message/sendText/{{$env.EVOLUTION_INSTANCE}}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "27704592553"
+            },
+            {
+              "name": "text",
+              "value": "=*New Lead Alert*\\n\\nName: {{$json[\"body\"][\"name\"]}}\\nEmail: {{$json[\"body\"][\"email\"]}}\\nCompany: {{$json[\"body\"][\"company\"]}}\\nPhone: {{$json[\"body\"][\"phone\"]}}\\nHours: {{$json[\"body\"][\"hours_manual\"]}}\\nSource: {{$json[\"body\"][\"source\"]}}"
+            }
+          ]
+        }
+      },
+      "id": "whatsapp-jordan",
+      "name": "WhatsApp - Jordan",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [500, 200]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{$env.EVOLUTION_API_URL}}/message/sendText/{{$env.EVOLUTION_INSTANCE}}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "27738916611"
+            },
+            {
+              "name": "text",
+              "value": "=*New Lead Alert*\\n\\nName: {{$json[\"body\"][\"name\"]}}\\nEmail: {{$json[\"body\"][\"email\"]}}\\nCompany: {{$json[\"body\"][\"company\"]}}\\nPhone: {{$json[\"body\"][\"phone\"]}}\\nHours: {{$json[\"body\"][\"hours_manual\"]}}\\nSource: {{$json[\"body\"][\"source\"]}}"
+            }
+          ]
+        }
+      },
+      "id": "whatsapp-jevon",
+      "name": "WhatsApp - Jevon",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [500, 400]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          { "node": "WhatsApp - Jordan", "type": "main", "index": 0 },
+          { "node": "WhatsApp - Jevon", "type": "main", "index": 0 }
+        ]
+      ]
+    }
+  }
+}
